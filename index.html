@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sanjivani University | Parent Meeting Attendance Portal</title>
+  <meta name="description" content="Sanjivani University - Parent-Teacher Meeting Attendance Registration Portal with Live Selfie Photo Proof Verification.">
+  
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="icon" type="image/jpeg" href="/static/images/college_crest.jpg">
+</head>
+<body>
+
+  <!-- Top Navigation & Header -->
+  <header class="portal-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" title="Parent Meeting Attendance Portal">
+        <img src="/static/images/college_crest.jpg" alt="College Crest" class="brand-logo">
+        <div class="brand-info">
+          <h1 id="instNameDisplay" data-i18n="inst_name">Sanjivani University</h1>
+          <div class="sub-dept" id="deptNameDisplay" data-i18n="dept_name">Department of Artificial Intelligence &amp; Machine Learning</div>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <!-- Language Selector -->
+        <div class="lang-selector-wrap" title="Select Language" data-i18n-title="lang_select_title">
+          <svg class="lang-globe-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <select id="languageSelect" class="lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="hi">हिंदी (Hindi)</option>
+            <option value="mr">मराठी (Marathi)</option>
+          </select>
+        </div>
+
+        <div class="meeting-badge">
+          <span class="pulse-dot"></span>
+          <span id="meetingDateBadge" data-i18n="live_portal">Live Portal</span>
+          <span style="opacity: 0.5;">|</span>
+          <span id="liveClockBadge" style="font-family: var(--font-mono); font-size: 0.75rem;">12:00:00</span>
+        </div>
+        <a href="/admin" class="btn-admin-nav" title="HOD &amp; Faculty Access">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          <span data-i18n="nav_hod_portal">HOD Portal</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-wrapper">
+
+    <!-- Hero / Welcome Banner -->
+    <section class="hero-banner">
+      <div style="display: inline-block; background: rgba(255,255,255,0.18); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 9999px; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;" data-i18n="hero_badge">
+        Official Student-Parent Attendance
+      </div>
+      <h2 id="meetingTitleDisplay" data-i18n="hero_title">Annual Parent-Teacher Academic Review 2026</h2>
+      <p data-i18n="hero_desc">
+        Welcome parents and students. Please complete the quick verification below. 
+        Attendance requires entering your student roll number and taking a live selfie photo together with the student as proof of participation.
+      </p>
+
+      <div class="instructions-strip">
+        <div class="inst-step">
+          <span class="step-num">1</span>
+          <span data-i18n="step_1">1. Enter Student PRN</span>
+        </div>
+        <div class="inst-step">
+          <span class="step-num">2</span>
+          <span data-i18n="step_2">2. Fill Parent Details</span>
+        </div>
+        <div class="inst-step">
+          <span class="step-num">3</span>
+          <span data-i18n="step_3">3. Take Live Selfie Together</span>
+        </div>
+        <div class="inst-step">
+          <span class="step-num">4</span>
+          <span data-i18n="step_4">4. Get Digital Verified Slip</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attendance Form & Camera Card Grid -->
+    <form id="attendanceForm" novalidate>
+      <!-- Anti-Bot Honeypot -->
+      <input type="text" id="websiteField" name="website" style="display:none;" tabindex="-1" autocomplete="off">
+
+      <div class="attendance-grid">
+        
+        <!-- Left Column: Student & Parent Information -->
+        <div class="card">
+          <div class="card-title-row">
+            <h3 class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span data-i18n="card_title_details">Student &amp; Parent Details</span>
+            </h3>
+            <span class="badge-required" data-i18n="badge_all_required">All fields required</span>
+          </div>
+
+          <!-- Duplicate Alert Warning Banner (Dynamic) -->
+          <div id="duplicateAlert" class="alert-banner danger" style="display: none;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <div id="duplicateMsg">
+              <strong data-i18n="duplicate_detected_title">Attendance already recorded!</strong>
+            </div>
+          </div>
+
+          <!-- Student ID / PRN Field with Fast Lookup -->
+          <div class="form-group">
+            <label class="form-label" for="studentId">
+              <span data-i18n="label_prn">Student PRN (University ID)</span> <span class="req">*</span>
+            </label>
+            <div class="input-with-action">
+              <input type="text" id="studentId" class="form-control" placeholder="e.g. 2125UMLM1128 or 2124UMLF2002" data-i18n-placeholder="prn_placeholder" required autocomplete="off" style="text-transform: uppercase; font-family: var(--font-mono); font-weight: 600;">
+              <button type="button" id="btnLookup" class="btn-lookup" title="Check PRN in university database" data-i18n="btn_autofill">
+                Auto-Fill
+              </button>
+            </div>
+            <span id="lookupFeedback" class="feedback-msg" data-i18n="prn_hint">Enter student PRN to auto-fill official name &amp; year</span>
+          </div>
+
+          <!-- Student Full Name -->
+          <div class="form-group">
+            <label class="form-label" for="studentName">
+              <span data-i18n="label_student_name">Student Full Name</span> <span class="req">*</span>
+            </label>
+            <input type="text" id="studentName" class="form-control" placeholder="Full name of student" data-i18n-placeholder="ph_student_name" required>
+          </div>
+
+          <!-- Class / Division Selection -->
+          <div class="form-group">
+            <label class="form-label" for="classDivision">
+              <span data-i18n="label_class">Academic Year / Division</span> <span class="req">*</span>
+            </label>
+            <select id="classDivision" class="form-control" required>
+              <option value="" data-i18n="opt_select_class">-- Select Year / Division --</option>
+              <option value="FY">FY</option>
+              <option value="SY-A">SY-A</option>
+              <option value="SY-B">SY-B</option>
+              <option value="TY-A">TY-A</option>
+              <option value="TY-B">TY-B</option>
+              <option value="FINAL YEAR">FINAL YEAR</option>
+              <option value="FY-A">FY-A</option>
+              <option value="FY-B">FY-B</option>
+            </select>
+          </div>
+
+          <!-- Parent / Guardian Name -->
+          <div class="form-group">
+            <label class="form-label" for="parentName">
+              <span data-i18n="label_parent_name">Parent / Guardian Full Name</span> <span class="req">*</span>
+            </label>
+            <input type="text" id="parentName" class="form-control" placeholder="Full name of attending parent/guardian" data-i18n-placeholder="ph_parent_name" required>
+          </div>
+
+          <!-- Relation Selection -->
+          <div class="form-group">
+            <label class="form-label" for="parentRelation">
+              <span data-i18n="label_relation">Relation</span> <span class="req">*</span>
+            </label>
+            <select id="parentRelation" class="form-control" required>
+              <option value="" data-i18n="opt_select_relation">-- Select Relation --</option>
+              <option value="Father" data-i18n="rel_father">Father</option>
+              <option value="Mother" data-i18n="rel_mother">Mother</option>
+              <option value="Brother" data-i18n="rel_brother">Brother</option>
+              <option value="Sister" data-i18n="rel_sister">Sister</option>
+              <option value="Uncle" data-i18n="rel_uncle">Uncle</option>
+              <option value="Other" data-i18n="rel_other">Other</option>
+            </select>
+          </div>
+
+          <!-- Other Relation Field (shown if 'Other' selected) -->
+          <div class="form-group" id="otherRelationGroup" style="display: none;">
+            <label class="form-label" for="otherRelation">
+              <span data-i18n="label_specify_relation">Specify Relation</span> <span class="req">*</span>
+            </label>
+            <input type="text" id="otherRelation" class="form-control" placeholder="Enter relation (e.g. Guardian, Grandfather)" data-i18n-placeholder="ph_specify_relation">
+          </div>
+
+          <!-- Parent Phone Number (10 digits) -->
+          <div class="form-group">
+            <label class="form-label" for="parentPhone">
+              <span data-i18n="label_phone">Parent Contact Phone Number</span> <span class="req">*</span>
+            </label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-weight: 600; color: var(--text-muted); font-size: 0.9rem;">+91</span>
+              <input type="tel" id="parentPhone" class="form-control" placeholder="10-digit mobile number" data-i18n-placeholder="ph_phone" style="padding-left: 48px; font-family: var(--font-mono);" maxlength="10" required>
+            </div>
+            <span class="feedback-msg" style="color: var(--text-light);" data-i18n="phone_hint">We will record this for attendance verification and official notices.</span>
+          </div>
+
+          <!-- Parent / Guardian Address -->
+          <div class="form-group">
+            <label class="form-label" for="parentAddress">
+              <span data-i18n="label_address">Parent / Guardian Address</span> <span class="req">*</span>
+            </label>
+            <textarea id="parentAddress" class="form-control" rows="2" placeholder="Complete residential address (House/Flat No., Street/Area, City/Town, Pincode)" data-i18n-placeholder="ph_address" required></textarea>
+            <span class="feedback-msg" style="color: var(--text-light);" data-i18n="address_hint">Required for official records and correspondence.</span>
+          </div>
+
+          <!-- Attendance Status Radio -->
+          <div class="form-group">
+            <label class="form-label">
+              <span data-i18n="label_status">Attendance Status</span> <span class="req">*</span>
+            </label>
+            <div class="status-selector">
+              <label class="status-card present active" id="statusPresentCard">
+                <input type="radio" name="attendanceStatus" id="statusPresent" value="Parent Present" checked>
+                <div class="status-indicator"></div>
+                <div class="status-label-group">
+                  <span class="status-main-label" data-i18n="status_present">Parent Present</span>
+                  <span class="status-sub-label" data-i18n="status_present_sub">Selfie proof required</span>
+                </div>
+              </label>
+
+              <label class="status-card absent" id="statusAbsentCard">
+                <input type="radio" name="attendanceStatus" id="statusAbsent" value="Parent Absent">
+                <div class="status-indicator"></div>
+                <div class="status-label-group">
+                  <span class="status-main-label" data-i18n="status_absent">Parent Absent</span>
+                  <span class="status-sub-label" data-i18n="status_absent_sub">Student / Desk note</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Optional Remarks / Mandatory Reason for Absence -->
+          <div class="form-group" id="remarksGroup" style="display: none;">
+            <label class="form-label" for="attendanceRemarks">
+              <span data-i18n="label_absence_reason">Reason for Absence</span> <span class="req" data-i18n="absence_mandatory_tag">* (Mandatory)</span>
+            </label>
+            <textarea id="attendanceRemarks" class="form-control" rows="3" placeholder="Please specify the mandatory reason why the parent/guardian cannot attend in person (e.g. Out of town for emergency, medical appointment, prior official commitment)..." data-i18n-placeholder="ph_absence_reason"></textarea>
+            <span class="feedback-msg" style="color: var(--danger-dark); font-weight: 500;" data-i18n="absence_reason_hint">Reason is mandatory when marking Parent Absent.</span>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Verification Proof (Live Photo or Signed Form Upload) -->
+        <div class="card" id="cameraSection">
+          
+          <!-- State A: Present -> Live Photo Stream -->
+          <div id="presentProofSection">
+            <div class="card-title-row">
+              <h3 class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span data-i18n="card_title_camera">Live Attendance Proof Photo</span>
+              </h3>
+              <span class="badge-required" style="background: #ecfdf5; color: #065f46;" data-i18n="badge_live_selfie">Live Selfie</span>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;" data-i18n="camera_instruction">
+              Parent and student must frame their faces together in the box below and click <strong>Capture Photo</strong>. 
+              A secure tamper-proof timestamp and student ID will be watermarked directly on the image.
+            </p>
+
+            <!-- Camera Box -->
+            <div class="camera-box">
+              <div class="camera-header-bar">
+                <span data-i18n="camera_live_feed">● LIVE CAMERA FEED</span>
+                <span id="cameraResolutionTag" style="font-size: 0.725rem; opacity: 0.8;" data-i18n="face_guide_active">Face Guide Active</span>
+              </div>
+
+              <!-- Viewport -->
+              <div class="camera-viewport">
+                
+                <!-- Video Stream -->
+                <video id="videoStream" autoplay playsinline muted></video>
+
+                <!-- Hidden Processing Canvas -->
+                <canvas id="photoCanvas"></canvas>
+
+                <!-- Captured Image Preview -->
+                <img id="capturedPreview" class="captured-preview-img" alt="Captured Attendance Proof">
+
+                <!-- Face Frame Guide Overlay -->
+                <div class="camera-overlay-guide" id="cameraGuide">
+                  <div class="face-target-frame"></div>
+                  <div class="overlay-instruction" data-i18n="overlay_guide">Position Student &amp; Parent Inside Box</div>
+                </div>
+
+                <!-- Watermark Banner on Preview -->
+                <div class="watermark-badge" id="watermarkBanner" style="display: none;">
+                  <!-- Filled dynamically via JS -->
+                </div>
+
+                <!-- Permission Prompt placeholder if camera blocked -->
+                <div class="camera-permission-placeholder" id="cameraPrompt" style="display: none;">
+                  <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                  <h4 data-i18n="cam_access_req">Camera Access Required</h4>
+                  <p data-i18n="cam_access_desc">Please grant browser camera access to snap the required live attendance selfie.</p>
+                  <button type="button" class="btn-start-camera" id="btnStartCamera" data-i18n="btn_enable_camera">
+                    Enable Camera
+                  </button>
+                </div>
+
+              </div>
+
+              <!-- Camera Controls Bar -->
+              <div class="camera-controls-bar">
+                <button type="button" class="btn-camera-util" id="btnFlipCamera" title="Switch Front / Back Camera (Mobile)">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 10c0-4.418-3.582-8-8-8s-8 3.582-8 8c0 2.21 1.05 4.17 2.68 5.43L4 20h6v-6l-2.22 2.22C6.67 15.11 6 13.66 6 12c0-3.314 2.686-6 6-6s6 2.686 6 6c0 1.66-.67 3.11-1.78 4.22L18.44 18.44C20.08 17.17 21 15.21 21 13"></path>
+                  </svg>
+                </button>
+
+                <button type="button" class="btn-snap" id="btnCapturePhoto">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <circle cx="12" cy="12" r="4"></circle>
+                  </svg>
+                  <span data-i18n="btn_capture_photo">Capture Photo</span>
+                </button>
+
+                <button type="button" class="btn-snap" id="btnRetakePhoto" style="display: none; background: #475569;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 4v6h6"></path>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                  </svg>
+                  <span data-i18n="btn_retake_photo">Retake Photo</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Fallback File Option -->
+            <div class="camera-fallback-link">
+              <span data-i18n="trouble_camera">Trouble with live camera?</span> 
+              <button type="button" id="btnFallbackFile" data-i18n="btn_fallback_upload">Upload photo from device camera</button>
+              <input type="file" id="fileFallbackInput" accept="image/*" capture="user" style="display: none;">
+            </div>
+          </div>
+
+          <!-- State B: Absent -> Optional Parent-Signed Form Upload -->
+          <div id="absentProofSection" style="display: none;">
+            <div class="card-title-row">
+              <h3 class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span data-i18n="absent_proof_title">Parent-Signed Absence Form</span>
+              </h3>
+              <span class="badge-required" style="background: #f1f5f9; color: #475569;" data-i18n="badge_optional">Optional</span>
+            </div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;" data-i18n="absent_proof_desc">
+              If the parent or guardian has provided a signed letter, absence application slip, or consent document, you can upload a photo or PDF copy below.
+            </p>
+
+            <div class="signed-form-dropzone" id="signedFormDropzone">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.75" style="margin-bottom: 0.5rem;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);" data-i18n="dropzone_text">Click or Drag &amp; Drop Signed Form Here</div>
+              <div style="font-size: 0.775rem; color: var(--text-muted); margin-top: 0.25rem;" data-i18n="dropzone_formats">Supported formats: JPG, PNG, WEBP, PDF (Max 15MB)</div>
+              <button type="button" class="btn-lookup" style="margin-top: 0.75rem;" id="btnBrowseSignedForm" data-i18n="btn_browse_doc">Browse Document</button>
+              <input type="file" id="signedFormInput" accept="image/*,application/pdf" style="display: none;">
+            </div>
+
+            <!-- Uploaded Document Preview -->
+            <div id="signedFormPreviewBox" style="display: none; margin-top: 1rem; padding: 0.75rem; background: var(--bg-subtle); border-radius: var(--radius-md); border: 1px solid var(--border); align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; overflow: hidden;">
+                <img id="signedFormThumb" src="" alt="Signed Form" style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; display: none;">
+                <div id="signedFormPdfIcon" style="width: 44px; height: 44px; border-radius: var(--radius-sm); background: #fee2e2; color: #dc2626; display: none; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem;">PDF</div>
+                <div style="overflow: hidden;">
+                  <div id="signedFormFileName" style="font-weight: 600; font-size: 0.85rem; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">form.jpg</div>
+                  <div id="signedFormFileSize" style="font-size: 0.75rem; color: var(--text-muted);">Ready to submit</div>
+                </div>
+              </div>
+              <button type="button" id="btnRemoveSignedForm" class="btn-admin danger" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" data-i18n="btn_remove_doc">Remove</button>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-submit-attendance" id="btnSubmitAttendance">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span id="submitBtnText" data-i18n="btn_submit_present">Confirm &amp; Record Attendance</span>
+          </button>
+
+          <p class="terms-note" data-i18n="terms_note">
+            By submitting, you certify that the student and parent attendance information is accurate. 
+            All submissions are timestamped and protected against duplicate entries.
+          </p>
+        </div>
+
+      </div>
+    </form>
+
+  </main>
+
+  <!-- Developer Credit Footer -->
+  <footer class="portal-footer">
+    <div class="footer-container">
+      <p class="developer-credit"><span data-i18n="footer_credit">Designed &amp; Developed by Mohammad Wasim Nasir Sayyad</span></p>
+    </div>
+  </footer>
+
+  <!-- Digital Attendance Pass Modal (Official Slip) -->
+  <div class="modal-backdrop" id="passModal">
+    <div class="pass-card">
+      <div class="pass-header">
+        <img src="/static/images/college_crest.jpg" alt="College Crest" class="pass-crest">
+        <h3 data-i18n="inst_name">Sanjivani University</h3>
+        <div class="pass-sub" data-i18n="dept_name">Department of Artificial Intelligence &amp; Machine Learning</div>
+        <div class="verified-stamp-pill" id="passStatusPill" data-i18n="pass_slip_title">
+          ✓ Official Attendance Slip
+        </div>
+      </div>
+
+      <div class="pass-body">
+        
+        <!-- Photo & Basic Meta -->
+        <div class="pass-photo-row">
+          <img src="" id="passPhotoThumb" class="pass-photo-thumb" alt="Proof">
+          <div class="pass-student-meta">
+            <h4 id="passStudentName">Aarav Sharma</h4>
+            <div class="roll-badge" id="passStudentRoll">AIML-A-01</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);" id="passClass">AIML-a</div>
+          </div>
+        </div>
+
+        <!-- Details Table -->
+        <table class="pass-details-table">
+          <tbody>
+            <tr>
+              <td class="label" data-i18n="pass_parent_name">Parent Name</td>
+              <td class="value" id="passParentName">Rajesh Sharma</td>
+            </tr>
+            <tr id="passRelationRow" style="display: none;">
+              <td class="label" data-i18n="pass_relation">Relation</td>
+              <td class="value" id="passRelation">-</td>
+            </tr>
+            <tr>
+              <td class="label" data-i18n="pass_parent_mobile">Parent Mobile</td>
+              <td class="value" id="passParentPhone">9823412345</td>
+            </tr>
+            <tr>
+              <td class="label" data-i18n="pass_status">Attendance Status</td>
+              <td class="value" id="passStatus" style="color: var(--success); font-weight: 700;">Parent Present</td>
+            </tr>
+            <tr>
+              <td class="label" data-i18n="pass_meeting_date">Meeting Date</td>
+              <td class="value" id="passDate">2026-09-27</td>
+            </tr>
+            <tr>
+              <td class="label" data-i18n="pass_recorded_time">Recorded Time</td>
+              <td class="value" id="passTime">10:15:32 AM</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- QR & Verification Code -->
+        <div class="pass-qr-section">
+          <div class="qr-box">
+            <canvas id="passQrCanvas" width="64" height="64"></canvas>
+          </div>
+          <div class="pass-code-box">
+            <div class="code-label" data-i18n="pass_verification_code">Verification Code</div>
+            <div class="code-val" id="passCode">PMA-2026-8A19B</div>
+            <div style="font-size: 0.725rem; color: var(--success); font-weight: 600;" data-i18n="pass_tamper_proof">Tamper-Proof Recorded</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Actions -->
+      <div class="pass-actions">
+        <button type="button" class="btn-pass-action primary" id="btnPrintPass">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          <span data-i18n="btn_print_pass">Print / Save Pass</span>
+        </button>
+
+        <button type="button" class="btn-pass-action secondary" id="btnNewEntry" data-i18n="btn_submit_another">
+          Submit Another
+        </button>
+        
+        <button type="button" class="btn-pass-action secondary" id="btnClosePass" style="flex: 0 0 auto; padding: 0.7rem;">
+          ✕
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Client Scripts -->
+  <script src="/static/js/translations.js"></script>
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>
